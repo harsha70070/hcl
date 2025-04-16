@@ -30,3 +30,8 @@ password: J69UvKqCA2heUR9D
 step6:
 
 Connect my repository with argocd and deployed docker images (available in ecr) with the help of manifest files available in kubernetes folder
+
+
+appointment-service - a25a114a715144939875b3917e879cef-606010539.us-east-1.elb.amazonaws.com
+
+patient-service - a3b100149fed445178b6db46acc9e89e-2094172200.us-east-1.elb.amazonaws.com 
