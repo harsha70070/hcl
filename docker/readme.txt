@@ -1,76 +1,26 @@
+Docker image creation and pushing it to ECR.
 
-# Use the official Node.js image
-FROM node:alpine
+Step 1: Tag Your Image
 
-# Set the working directory in the container
-WORKDIR /app
+bash
+docker build -t patient-service patient-service/
+docker build -t appointment-service appointment-service/
 
-# Copy the package*.json files to the working directory
-COPY package*.json ./
-
-# Install the dependencies
-RUN npm install
-
-# Copy the application code to the working directory
-COPY . .
-
-# Expose the port the application will run on
-EXPOSE 3000
-
-# Run the command to start the application when the container launches
-CMD ["node", "patient-service.js"]
+bash
+docker tag patient-service:latest 539935451710.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest
+docker tag appointment-service:latest 539935451710.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest
 
 
-Appointment Service Dockerfile
+Step 2: Push Your Image
 
-# Use the official Node.js image
-FROM node:alpine
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the package*.json files to the working directory
-COPY package*.json ./
-
-# Install the dependencies
-RUN npm install
-
-# Copy the application code to the working directory
-COPY . .
-
-# Expose the port the application will run on
-EXPOSE 3001
-
-# Run the command to start the application when the container launches
-CMD ["node", "appointment-service.js"]
+bash
+docker push 539935451710.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest
+docker push 539935451710.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest
 
 
-Building the Docker Images
-To build the Docker images, navigate to the directory containing the Dockerfile for each service and run the following command:
+Make sure you've already logged in to ECR using the command:
 
 
 bash
-docker build -t patient-service .
-docker build -t appointment-service .
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 539935451710.dkr.ecr.us-east-1.amazonaws.com
 
-
-Running the Docker Containers
-To run the Docker containers, use the following command:
-
-
-bash
-docker run -p 3000:3000 patient-service
-docker run -p 3001:3001 appointment-service
-
-
-
-project-root/
-├── patient-service/
-│   ├── patient-service.js
-│   ├── package.json
-│   └── Dockerfile
-├── appointment-service/
-│   ├── appointment-service.js
-│   ├── package.json
-│   └── Dockerfile
-└── docker-compose.yml
